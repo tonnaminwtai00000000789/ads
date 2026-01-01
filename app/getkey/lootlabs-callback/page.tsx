@@ -71,8 +71,7 @@ export default function LootLabsCallback() {
     }, [searchParams, router]);
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-background/50">
-            <div className="text-center p-8 bg-gray-800/50 rounded-2xl backdrop-blur-sm border border-gray-700 max-w-md">
+        <div className="flex items-center justify-center min-h-screen bg-background">
                 {status === 'loading' && (
                     <>
 <Loading />; 
@@ -81,6 +80,7 @@ export default function LootLabsCallback() {
 
                 {status === 'error' && (
                     <>
+                                <div className="text-center p-8 bg-gray-800/50 rounded-2xl backdrop-blur-sm border border-gray-700 max-w-md">
                         <div className="mb-6">
                             <svg
                                 className="w-16 h-16 text-red-500 mx-auto"
@@ -98,9 +98,9 @@ export default function LootLabsCallback() {
                         </div>
                         <h2 className="text-2xl font-bold text-white mb-2">Error</h2>
                         <p className="text-gray-400">{message}</p>
+                                    </div>
                     </>
                 )}
-            </div>
         </div>
     );
 }

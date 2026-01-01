@@ -21,7 +21,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-background/50 flex items-center justify-center  overflow-hidden text-zinc-50 font-sans selection:bg-[#d4a76a]/30">
+    <div className="relative min-h-screen w-full bg-background flex items-center justify-center  overflow-hidden text-zinc-50 font-sans selection:bg-[#d4a76a]/30">
 
 
       <section className="relative z-10 w-full max-w-md px-4 py-8 flex flex-col items-center gap-12">

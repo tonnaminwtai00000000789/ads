@@ -162,7 +162,7 @@ const generateEncryptedLink = async () => {
             },
             body: JSON.stringify({
                 // ✅ ชี้ไปหน้า callback แทน API
-                destination_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/lootlabs-callback?token=${data.token}&discord_id=${session?.user?.id}`,
+                destination_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/getkey/lootlabs-callback?token=${data.token}&discord_id=${session?.user?.id}`,
             }),
             credentials: "include",
         });
@@ -191,7 +191,7 @@ const handleLinkvertiseClick = async () => {
     const link = await generateEncryptedLink();
     if (link && token) {
         // ✅ เปลี่ยน callback URL ให้ชี้ไปหน้า frontend แทน API
-        const callbackUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/linkvertise-callback?discord_id=${session?.user?.id}&token=${token}`;
+        const callbackUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/getkey/linkvertise-callback?discord_id=${session?.user?.id}&token=${token}`;
         
         const final = `https://link-to.net/1162634/${Math.random() * 1000}/dynamic?r=${btoa(
             encodeURI(callbackUrl)
@@ -227,7 +227,7 @@ const handleLinkvertiseClick = async () => {
     };
 
     return (
-        <div className="relative min-h-screen w-full flex items-center justify-center bg-background/50 overflow-hidden text-zinc-50 font-sans selection:bg-[#d4a76a]/30">
+        <div className="relative min-h-screen w-full flex items-center justify-center bg-background overflow-hidden text-zinc-50 font-sans selection:bg-[#d4a76a]/30">
             {/* User Info & Logout */}
             <nav className="absolute top-4 right-4 z-50 flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-700">
                 <div className="flex items-center gap-3 bg-zinc-900/80 backdrop-blur-md px-4 py-2 rounded-full border border-zinc-800 shadow-xl">
