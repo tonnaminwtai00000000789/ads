@@ -75,32 +75,32 @@ export default function GetKeyPage() {
         checkKey();
     }, [session]);
 
-    const checkKey = async () => {
-        try {
-            setLoadingKey(true);
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/chack-key?discord_id=${session?.user?.id}`,
-                {
-                    credentials: "include",
-                    method: "GET",
-                    headers: {
-                        "X-Secret": process.env.API_KEY! || "",
-                    },
-                }
-            );
-
-            const data = await res.json();
-            if (data.valid) {
-                setKey(data.key);
-            } else {
-                setKey(null);
+const checkKey = async () => {
+    try {
+        setLoadingKey(true);
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/chack-key?discord_id=${session?.user?.id}`,
+            {
+                credentials: "include",
+                method: "GET",
+                headers: {
+                    "X-Secret": process.env.NEXT_PUBLIC_API_KEY || "",
+                },
             }
-        } catch (err) {
-            console.error("Error checking key:", err);
-        } finally {
-            setLoadingKey(false);
+        );
+
+        const data = await res.json();
+        if (data.valid) {
+            setKey(data.key);
+        } else {
+            setKey(null);
         }
-    };
+    } catch (err) {
+        console.error("Error checking key:", err);
+    } finally {
+        setLoadingKey(false);
+    }
+};
 
     useEffect(() => {
         if (!key) return;
