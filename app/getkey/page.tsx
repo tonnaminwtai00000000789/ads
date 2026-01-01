@@ -163,41 +163,48 @@ const checkKey = async () => {
         setVerified(data.success);
     };
 
-    const generateEncryptedLink = async () => {
-        try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/create-token`, {
-                method: "POST",
-                credentials: "include",
-                headers: { "Content-Type": "application/json", "X-Secret": process.env.NEXT_PUBLIC_API_KEY || "" },
-            });
-            const data = await res.json();
+const generateEncryptedLink = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/create-token`, {
+            method: "POST",
+            credentials: "include",
+            headers: { 
+                "Content-Type": "application/json", 
+                "X-Secret": process.env.NEXT_PUBLIC_API_KEY || "" 
+            },
+        });
+        const data = await res.json();
 
-            if (!data.success) {
-                toast.error("Failed to create token.");
-                return;
-            }
-
-            const encRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/encryptLink`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "X-Secret": process.env.NEXT_PUBLIC_API_KEY || "" },
-                body: JSON.stringify({
-                    destination_url: `${process.env.NEXT_PUBLIC_API_URL}/api/genkey-loot?token=${data.token}&discord_id=${session?.user?.id}`,
-                }),
-                credentials: "include",
-            });
-
-            if (!encRes.ok) throw new Error("Encryption failed");
-
-            const encData = await encRes.json();
-            setToken(data.token);
-            return encData.encryptedLink;
-        } catch (err) {
-            console.error(err);
-            toast.error("An error occurred during encryption.");
-            return null;
+        if (!data.success) {
+            toast.error("Failed to create token.");
+            return;
         }
-    };
 
+        // ✅ เปลี่ยน destination_url ให้ชี้ไปหน้า frontend
+        const encRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/encryptLink`, {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json", 
+                "X-Secret": process.env.NEXT_PUBLIC_API_KEY || "" 
+            },
+            body: JSON.stringify({
+                // ✅ ชี้ไปหน้า callback แทน API
+                destination_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/lootlabs-callback?token=${data.token}&discord_id=${session?.user?.id}`,
+            }),
+            credentials: "include",
+        });
+
+        if (!encRes.ok) throw new Error("Encryption failed");
+
+        const encData = await encRes.json();
+        setToken(data.token);
+        return encData.encryptedLink;
+    } catch (err) {
+        console.error(err);
+        toast.error("An error occurred during encryption.");
+        return null;
+    }
+};
     const handleLootLabsClick = async () => {
         toast.info("Redirecting to LootLabs...");
         const link = await generateEncryptedLink();
@@ -206,19 +213,20 @@ const checkKey = async () => {
         }
     };
 
-    const handleLinkvertiseClick = async () => {
-        toast.info("Redirecting to Linkvertise...");
-        const link = await generateEncryptedLink();
-        if (link && token) {
-            const final = `https://link-to.net/1162634/${Math.random() * 1000
-                }/dynamic?r=${btoa(
-                    encodeURI(
-                        `${process.env.NEXT_PUBLIC_API_URL}/api/genkey?discord_id=${session?.user?.id}&token=${token}`
-                    )
-                )}`;
-            window.location.href = final;
-        }
-    };
+const handleLinkvertiseClick = async () => {
+    toast.info("Redirecting to Linkvertise...");
+    const link = await generateEncryptedLink();
+    if (link && token) {
+        // ✅ เปลี่ยน callback URL ให้ชี้ไปหน้า frontend แทน API
+        const callbackUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/linkvertise-callback?discord_id=${session?.user?.id}&token=${token}`;
+        
+        const final = `https://link-to.net/1162634/${Math.random() * 1000}/dynamic?r=${btoa(
+            encodeURI(callbackUrl)
+        )}`;
+        
+        window.location.href = final;
+    }
+};
 
     const copy = () => {
         if (key) {
