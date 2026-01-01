@@ -54,15 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
   const login = () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    
-    // ส่ง secret ผ่าน header
-    fetch(`${apiUrl}/auth/discord`, {
-    }).then(response => {
-      if (response.ok) {
-        window.location.href = `${apiUrl}/auth/discord`;
-      }
-    });
+        window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/discord`;
   };
 
     const logout = async () => {
