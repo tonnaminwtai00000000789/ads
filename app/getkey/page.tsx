@@ -84,7 +84,7 @@ export default function GetKeyPage() {
                     credentials: "include",
                     method: "GET",
                     headers: {
-                        "X-Secret": process.env.NEXT_PUBLIC_API_KEY || "",
+                        "X-Secret": process.env.API_KEY! || "",
                     },
                 }
             );
