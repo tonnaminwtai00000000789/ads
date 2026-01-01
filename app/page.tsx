@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 export default function HomePage() {
   const { session, login } = useAuth();
@@ -20,24 +21,21 @@ export default function HomePage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center bg-zinc-950 overflow-hidden text-zinc-50 font-sans selection:bg-[#d4a76a]/30">
-      {/* Background Ambience */}
-      <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vh] bg-[#d4a76a]/10 blur-[100px] rounded-full mix-blend-screen" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vh] bg-[#d4a76a]/10 blur-[100px] rounded-full mix-blend-screen" />
-      </div>
+    <div className="relative min-h-screen w-full bg-background/50 flex items-center justify-center  overflow-hidden text-zinc-50 font-sans selection:bg-[#d4a76a]/30">
+
 
       <section className="relative z-10 w-full max-w-md px-4 py-8 flex flex-col items-center gap-12">
         <header className="text-center">
-          <h1
-            className="tracking-tight bg-clip-text text-transparent bg-linear-to-b from-neutral-200 via-[#d4a76a] to-[#d4a76a] text-6xl md:text-8xl font-bold animate-title py-6 cursor-default"
-            style={{ textWrap: "balance" }}
-          >
-            IJON KEY
-          </h1>
-          <h2 className="text-xl text-zinc-500 max-w-75 mx-auto mt-4">
-            Welcome! Please login with Discord to continue.
-          </h2>
+                    <Label className="tracking-tight bg-clip-text text-transparent bg-linear-to-b from-neutral-800 via-[#d4a76a] to-[#d4a76a] text-4xl md:text-4xl lg:text-8xl font-semibold max-w-6xl mx-auto text-center mt-6 relative z-10 py-6"
+                        style={{
+                            display: "inline-block",
+                            verticalAlign: "top",
+                            textDecoration: "inherit",
+                            textWrap: "balance"
+                        }}
+                    >
+                        IJON KEY
+                    </Label>
         </header>
 
         <main className="flex flex-col items-center w-full">

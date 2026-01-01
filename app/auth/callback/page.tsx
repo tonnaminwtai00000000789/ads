@@ -18,11 +18,16 @@ export default function AuthCallbackPage() {
             // Redirect to backend callback endpoint with the code
             window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/callback?code=${code}`;
         } else {
-            toast.error("Authentication failed: No authorization code provided.");
-            const timer = setTimeout(() => {
-                router.push("/");
-            }, 2000);
-            return () => clearTimeout(timer);
+            const toastKey = "toast_auth_error";
+            if (!sessionStorage.getItem(toastKey)) {
+                setTimeout(() => {
+                    toast.error("Authentication failed: No authorization code provided.");
+                    sessionStorage.setItem(toastKey, "shown");
+                    const timer = setTimeout(() => {
+                        router.push("/");
+                    }, 2000);
+                }, 100);
+            }
         }
     }, [router]);
 

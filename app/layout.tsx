@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/context/AuthContext";
-import { Toaster } from "@/components/ui/sonner";
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,16 +35,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-[#d4a76a]/30`}
       >
-        <AuthProvider>
+        <Providers>
           <main id="main-content">
+            <div
+              style={{
+                backgroundImage: 'url("/C4botF.gif")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                filter: 'blur(8px)',
+              }}
+              className="fixed inset-0 z-0"
+            >
+            </div>
             {children}
           </main>
-          <Toaster />
-        </AuthProvider>
+        </Providers>
       </body>
     </html>
   );

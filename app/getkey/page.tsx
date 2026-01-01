@@ -50,16 +50,20 @@ export default function GetKeyPage() {
             const meg = urlParams.get("meg");
 
             if (type && meg && !toastShown.current) {
+                toastShown.current = true;
                 let toastType = type.toLowerCase();
                 let message = decodeURIComponent(meg);
                 message = message.replace(/&nbsp;/g, " ");
 
-                if (toastType === "success") toast.success(message);
-                else if (toastType === "error") toast.error(message);
-                else toast.info(message);
-
-                toastShown.current = true;
+                // ลบ query params ออกจาก URL ทันทีก่อน trigger toast
                 window.history.replaceState({}, "", window.location.pathname);
+
+                // ให้ Toaster render เสร็จก่อน trigger toast
+                setTimeout(() => {
+                    if (toastType === "success") toast.success(message);
+                    else if (toastType === "error") toast.error(message);
+                    else toast.info(message);
+                }, 100);
             }
         }
     }, []);
@@ -242,12 +246,7 @@ const checkKey = async () => {
     };
 
     return (
-        <div className="relative min-h-screen w-full flex items-center justify-center bg-zinc-950 overflow-hidden text-zinc-50 font-sans selection:bg-[#d4a76a]/30">
-            {/* Background Ambience */}
-            <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
-                <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vh] bg-[#d4a76a]/10 blur-[100px] rounded-full mix-blend-screen" />
-            </div>
-
+        <div className="relative min-h-screen w-full flex items-center justify-center bg-background/50 overflow-hidden text-zinc-50 font-sans selection:bg-[#d4a76a]/30">
             {/* User Info & Logout */}
             <nav className="absolute top-4 right-4 z-50 flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-700">
                 <div className="flex items-center gap-3 bg-zinc-900/80 backdrop-blur-md px-4 py-2 rounded-full border border-zinc-800 shadow-xl">
