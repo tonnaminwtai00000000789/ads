@@ -55,13 +55,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = () => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY || "";
     
     // ส่ง secret ผ่าน header
     fetch(`${apiUrl}/auth/discord`, {
-      headers: {
-        'X-Secret': apiKey
-      }
     }).then(response => {
       if (response.ok) {
         window.location.href = `${apiUrl}/auth/discord`;
