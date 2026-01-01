@@ -40,33 +40,6 @@ export default function GetKeyPage() {
     const [timeLeft, setTimeLeft] = useState<string | null>(null);
     const [showPopup, setShowPopup] = useState(false);
     const [loadingKey, setLoadingKey] = useState(false);
-    const toastShown = useRef(false);
-
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            const rawSearch = window.location.search.replace(/&nbsp;/g, " ");
-            const urlParams = new URLSearchParams(rawSearch);
-            const type = urlParams.get("type");
-            const meg = urlParams.get("meg");
-
-            if (type && meg && !toastShown.current) {
-                toastShown.current = true;
-                let toastType = type.toLowerCase();
-                let message = decodeURIComponent(meg);
-                message = message.replace(/&nbsp;/g, " ");
-
-                // ลบ query params ออกจาก URL ทันทีก่อน trigger toast
-                window.history.replaceState({}, "", window.location.pathname);
-
-                // ให้ Toaster render เสร็จก่อน trigger toast
-                setTimeout(() => {
-                    if (toastType === "success") toast.success(message);
-                    else if (toastType === "error") toast.error(message);
-                    else toast.info(message);
-                }, 100);
-            }
-        }
-    }, []);
 
     useEffect(() => {
         if (!session) {

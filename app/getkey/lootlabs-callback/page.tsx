@@ -3,10 +3,11 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner'; // หรือ sonner, react-toastify
 import Loading from '@/components/Loading';
+    
 
 
 export default function LootLabsCallback() {
@@ -14,8 +15,11 @@ export default function LootLabsCallback() {
     const router = useRouter();
     const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
     const [message, setMessage] = useState('Processing your request...');
+    const hasProcessed = useRef(false);
 
     useEffect(() => {
+        if (hasProcessed.current) return; // ป้องกัน double execution
+        hasProcessed.current = true;
         const processCallback = async () => {
             // ✅ ดึง token และ discord_id จาก URL
             const token = searchParams.get('token');

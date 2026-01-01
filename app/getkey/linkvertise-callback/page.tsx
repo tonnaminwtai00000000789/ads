@@ -3,7 +3,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner'; // หรือ sonner, react-toastify
 import Loading from '@/components/Loading';
@@ -13,8 +13,12 @@ export default function LinkvertiseCallback() {
     const router = useRouter();
     const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
     const [message, setMessage] = useState('Processing your request...');
+    const hasProcessed = useRef(false);
 
     useEffect(() => {
+        if (hasProcessed.current) return; // ป้องกัน double execution
+        hasProcessed.current = true;
+
         const processCallback = async () => {
             // ✅ ดึง token และ discord_id จาก URL
             const token = searchParams.get('token');
@@ -47,7 +51,7 @@ export default function LinkvertiseCallback() {
                 const data = await response.json();
 
                 if (data.success) {
-                    toast.success('Key generated successfully!');
+                    toast.success(data.message || 'Key generated successfully!');
                         router.push('/getkey');
                 } else {
                     throw new Error(data.message || 'Failed to generate key');
@@ -67,34 +71,10 @@ export default function LinkvertiseCallback() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-background">
                 {status === 'loading' && (
-                    <><Loading />;
-                    </>
-                )}
-
-                {status === 'success' && (
                     <>
-                                <div className="text-center p-8 bg-gray-800/50 rounded-2xl backdrop-blur-sm border border-gray-700 max-w-md">
-                        <div className="mb-6">
-                            <svg
-                                className="w-16 h-16 text-green-500 mx-auto"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                            </svg>
-                        </div>
-                        <h2 className="text-2xl font-bold text-white mb-2">Success!</h2>
-                        <p className="text-gray-400">{message}</p>
-                                    </div>
+                    <Loading />;
                     </>
                 )}
-
                 {status === 'error' && (
                     <>
                                 <div className="text-center p-8 bg-gray-800/50 rounded-2xl backdrop-blur-sm border border-gray-700 max-w-md">
