@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +37,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body
+      <head>
+        <script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1235374"></script>
+        <Script src="https://publisher.linkvertise.com/cdn/linkvertise.js" />
+        <script
+  dangerouslySetInnerHTML={{
+    __html: `
+      (window as any).linkvertise(1162634, {
+        whitelist: [],
+        blacklist: [""]
+      });
+    `,
+  }}
+/>
+      </head>
+      <Script
+         data-cfasync="false"
+         src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1235374"
+      />
+          <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-[#d4a76a]/30`}
       >
         <Providers>
